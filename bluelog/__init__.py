@@ -32,13 +32,13 @@ def create_app(config_name=None):
     app = Flask('bluelog')
     app.config.from_object(config[config_name])
 
-    register_logging(app)
-    register_extensions(app)
-    register_blueprints(app)
-    register_commands(app)
-    register_errors(app)
-    register_shell_context(app)
-    register_template_context(app)
+    register_logging(app)   #注册日志处理器
+    register_extensions(app)    #注册扩展（扩展初始化）
+    register_blueprints(app)    #注册蓝本
+    register_commands(app)  #注册自定义shell命令
+    register_errors(app)    #注册错误处理函数
+    register_shell_context(app) #注册shell 上下文处理函数
+    register_template_context(app)  #注册模板上下文处理函数
     register_request_handlers(app)
     return app
 
