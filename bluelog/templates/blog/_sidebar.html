@@ -1,3 +1,4 @@
+{# links来自__init__.py中的 register_template_context(app) #}
 {% if links %}
     <div class="card mb-3">
         <div class="card-header">Links</div>
@@ -10,7 +11,7 @@
         </ul>
     </div>
 {% endif %}
-
+{# categories来自__init__.py中的 register_template_context(app) #}
 {% if categories %}
     <div class="card mb-3">
         <div class="card-header">Categories</div>
@@ -27,6 +28,7 @@
     </div>
 {% endif %}
 
+{# 侧边栏下拉框，改变页面风格，点击选项触发blog.py中的 #}
 <div class="dropdown">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

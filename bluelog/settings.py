@@ -37,8 +37,10 @@ class BaseConfig(object):
     MAIL_DEFAULT_SENDER = ('Bluelog Admin', MAIL_USERNAME)
 
     BLUELOG_EMAIL = os.getenv('BLUELOG_EMAIL')
+    # 一页展示10个文章
     BLUELOG_POST_PER_PAGE = 10
     BLUELOG_MANAGE_POST_PER_PAGE = 15
+    # 一页展示15条评论
     BLUELOG_COMMENT_PER_PAGE = 15
     # ('theme name', 'display name')
     BLUELOG_THEMES = {'perfect_blue': 'Perfect Blue', 'black_swan': 'Black Swan'}

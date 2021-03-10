@@ -96,12 +96,14 @@ def register_blueprints(app):
 
 
 def register_shell_context(app):
+    #shell上下文处理器，避免使用flask shell时需要重复导入
     @app.shell_context_processor
     def make_shell_context():
         return dict(db=db, Admin=Admin, Post=Post, Category=Category, Comment=Comment)
 
-
+# 从数据库查询数据返回给模板渲染
 def register_template_context(app):
+    #app_context_processor在flask中被称作上下文处理器，借助app_context_processor我们可以让所有自定义变量在模板中可见
     @app.context_processor
     def make_template_context():
         admin = Admin.query.first()

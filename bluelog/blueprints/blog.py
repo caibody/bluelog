@@ -45,6 +45,7 @@ def show_category(category_id):
 @blog_bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):
     post = Post.query.get_or_404(post_id)
+    # 获取?page=xxx，默认为1
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['BLUELOG_COMMENT_PER_PAGE']
     pagination = Comment.query.with_parent(post).filter_by(reviewed=True).order_by(Comment.timestamp.asc()).paginate(
@@ -96,12 +97,13 @@ def reply_comment(comment_id):
     return redirect(
         url_for('.show_post', post_id=comment.post_id, reply=comment_id, author=comment.author) + '#comment-form')
 
-
+# 改变页面颜色
 @blog_bp.route('/change-theme/<theme_name>')
 def change_theme(theme_name):
+    # current_app.config都是在settings.py中定义
     if theme_name not in current_app.config['BLUELOG_THEMES'].keys():
         abort(404)
-
+    #改变页面颜色后还是返回当前页面
     response = make_response(redirect_back())
     response.set_cookie('theme', theme_name, max_age=30 * 24 * 60 * 60)
     return response

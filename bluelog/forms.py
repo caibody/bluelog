@@ -31,12 +31,13 @@ class SettingForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(1, 60)])
-    category = SelectField('Category', coerce=int, default=1)
+    category = SelectField('Category', coerce=int, default=1)   # SelectField类用coerce指定数据类型，default设置默认选项值
     body = CKEditorField('Body', validators=[DataRequired()])
     submit = SubmitField()
 
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
+        # 下拉列表的选项通过参数choices指定。choices必须是一个包含两元素元组的列表，列表中的元组分别包含选项值和选项标签。
         self.category.choices = [(category.id, category.name)
                                  for category in Category.query.order_by(Category.name).all()]
 
@@ -59,7 +60,7 @@ class CommentForm(FlaskForm):
 
 
 class AdminCommentForm(CommentForm):
-    author = HiddenField()
+    author = HiddenField()  # HiddenField()隐藏字段
     email = HiddenField()
     site = HiddenField()
 

@@ -24,6 +24,7 @@ def redirect_back(default='blog.index', **kwargs):
         if not target:
             continue
         if is_safe_url(target):
+            print(target)
             return redirect(target)
     return redirect(url_for(default, **kwargs))
 
