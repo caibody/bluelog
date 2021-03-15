@@ -23,6 +23,7 @@ def index():
     per_page = current_app.config['BLUELOG_POST_PER_PAGE']
     # 查询Post数据表，按时间倒序排序，分页查询默认第一页10个
     pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, per_page=per_page)
+    # pagination.items的类型是<class 'bluelog.models.Post'>
     posts = pagination.items
     return render_template('blog/index.html', pagination=pagination, posts=posts)
 
@@ -37,6 +38,7 @@ def show_category(category_id):
     category = Category.query.get_or_404(category_id)
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['BLUELOG_POST_PER_PAGE']
+    # print(category)
     pagination = Post.query.with_parent(category).order_by(Post.timestamp.desc()).paginate(page, per_page)
     posts = pagination.items
     return render_template('blog/category.html', category=category, pagination=pagination, posts=posts)
@@ -52,14 +54,15 @@ def show_post(post_id):
         page, per_page)
     comments = pagination.items
 
-    if current_user.is_authenticated:
+    #如果管理员账户登录，在每一篇文章的评论部分会隐藏掉name、email、site字段的输入，使用当前账户信息自动赋值
+    if current_user.is_authenticated:   #判断是否已经登录，如果登录使用管理员表单进行渲染
         form = AdminCommentForm()
         form.author.data = current_user.name
         form.email.data = current_app.config['BLUELOG_EMAIL']
         form.site.data = url_for('.index')
         from_admin = True
         reviewed = True
-    else:
+    else:   #如果未登录使用普通表单进行渲染
         form = CommentForm()
         from_admin = False
         reviewed = False
@@ -100,10 +103,12 @@ def reply_comment(comment_id):
 # 改变页面颜色
 @blog_bp.route('/change-theme/<theme_name>')
 def change_theme(theme_name):
+    print(request.full_path)
     # current_app.config都是在settings.py中定义
     if theme_name not in current_app.config['BLUELOG_THEMES'].keys():
         abort(404)
     #改变页面颜色后还是返回当前页面
     response = make_response(redirect_back())
+    # max_age设置cookie存在时间，单位是秒，这里是30天
     response.set_cookie('theme', theme_name, max_age=30 * 24 * 60 * 60)
     return response

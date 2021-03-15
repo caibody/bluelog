@@ -11,6 +11,7 @@
     <div class="row">
         <div class="col-sm-8">
             {% include 'blog/_posts.html' %}
+            {# 分页导航部件 #}
             {% if posts %}
                 <div class="page-footer">{{ render_pager(pagination) }}</div>
             {% endif %}
